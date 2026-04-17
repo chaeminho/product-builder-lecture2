@@ -34,6 +34,28 @@
         <label><input type="checkbox" name="category" value="western" checked> Western</label>
         <label><input type="checkbox" name="category" value="others" checked> Others</label>
     </div>
+
+    <hr class="divider">
+
+    <section class="contact-section">
+        <h2>🤝 Partnership Inquiry</h2>
+        <p>We look forward to your business partnership and collaboration proposals.</p>
+        <form action="https://formspree.io/f/mpqkdood" method="POST" class="contact-form">
+            <div class="form-group">
+                <label for="name">Name / Company</label>
+                <input type="text" id="name" name="name" placeholder="John Doe / Foodie Inc." required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="example@email.com" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="4" placeholder="Please enter your proposal." required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">Send Message</button>
+        </form>
+    </section>
 </div>
 
 <script src="main.js"></script>

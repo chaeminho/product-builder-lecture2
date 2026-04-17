@@ -166,3 +166,78 @@ header p {
 .category-filters label:hover {
     border-color: var(--accent-color);
 }
+
+/* Contact Form Styles */
+.divider {
+    margin: 50px 0;
+    border: 0;
+    border-top: 1px solid var(--border-color);
+}
+
+.contact-section {
+    text-align: left;
+    margin-top: 40px;
+}
+
+.contact-section h2 {
+    text-align: center;
+    color: var(--text-color);
+}
+
+.contact-section p {
+    text-align: center;
+    font-size: 0.95rem;
+    color: var(--label-color);
+    margin-bottom: 30px;
+}
+
+.contact-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form-group label {
+    font-weight: bold;
+    font-size: 0.9rem;
+    color: var(--label-color);
+}
+
+.form-group input, .form-group textarea {
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    font-size: 1rem;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.form-group input:focus, .form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.submit-btn {
+    padding: 15px;
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.submit-btn:hover {
+    filter: brightness(1.1);
+    transform: translateY(-2px);
+}
