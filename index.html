@@ -3,46 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>제휴 문의</title>
+    <title>오늘 뭐 먹지? - 저녁 메뉴 추천</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <button id="theme-toggle" class="theme-toggle">🌙 다크 모드</button>
 
-<div class="form-container">
-    <h2>제휴 문의하기</h2>
-    <form action="https://formspree.io/f/xgorwaqo" method="POST">
-        
-        <div class="form-group">
-            <label for="company">회사명 / 담당자 성함</label>
-            <input type="text" id="company" name="company" placeholder="예: (주)게미니 / 홍길동" required>
-        </div>
+<div class="container">
+    <header>
+        <h1>🍽️ 오늘 뭐 먹지?</h1>
+        <p>결정 장애를 위한 저녁 메뉴 추천 시스템</p>
+    </header>
 
-        <div class="form-group">
-            <label for="email">회신 받을 이메일</label>
-            <input type="email" id="email" name="_replyto" placeholder="example@domain.com" required>
+    <div class="recommend-box">
+        <div id="menu-display" class="menu-display">
+            메뉴를 추천받아보세요!
         </div>
+        <button id="recommend-btn" class="recommend-btn">오늘의 메뉴 추천받기</button>
+    </div>
 
-        <div class="form-group">
-            <label for="type">문의 유형</label>
-            <select id="type" name="type">
-                <option value="marketing">마케팅/광고 제휴</option>
-                <option value="content">콘텐츠 협업</option>
-                <option value="technical">기술/API 연동</option>
-                <option value="other">기타 문의</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="message">상세 내용</label>
-            <textarea id="message" name="message" placeholder="제휴 제안 내용을 상세히 적어주세요." required></textarea>
-        </div>
-
-        <input type="hidden" name="_subject" value="새로운 제휴 문의가 접수되었습니다!">
-        
-        <button type="submit">문의 보내기</button>
-    </form>
+    <div class="category-filters">
+        <label><input type="checkbox" name="category" value="korean" checked> 한식</label>
+        <label><input type="checkbox" name="category" value="chinese" checked> 중식</label>
+        <label><input type="checkbox" name="category" value="japanese" checked> 일식</label>
+        <label><input type="checkbox" name="category" value="western" checked> 양식</label>
+        <label><input type="checkbox" name="category" value="others" checked> 기타</label>
+    </div>
 </div>
 
 <script src="main.js"></script>
