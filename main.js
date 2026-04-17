@@ -4,6 +4,9 @@ const recommendBtn = document.getElementById('recommend-btn');
 const menuDisplay = document.getElementById('menu-display');
 const categoryCheckboxes = document.querySelectorAll('input[name="category"]');
 
+// Language detection
+const isEnglish = html.getAttribute('lang') === 'en';
+
 // Theme Toggle logic
 const savedTheme = localStorage.getItem('theme') || 'light';
 html.setAttribute('data-theme', savedTheme);
@@ -19,16 +22,29 @@ themeToggle.addEventListener('click', () => {
 });
 
 function updateToggleText(theme) {
-    themeToggle.textContent = theme === 'light' ? '🌙 다크 모드' : '☀️ 라이트 모드';
+    if (isEnglish) {
+        themeToggle.textContent = theme === 'light' ? '🌙 Dark Mode' : '☀️ Light Mode';
+    } else {
+        themeToggle.textContent = theme === 'light' ? '🌙 다크 모드' : '☀️ 라이트 모드';
+    }
 }
 
-// Menu Recommendation Logic
+// Menu Data
 const menuData = {
-    korean: ['김치찌개', '된장찌개', '불고기', '비빔밥', '제육볶음', '갈비탕', '냉면', '삼겹살'],
-    chinese: ['짜장면', '짬뽕', '탕수육', '마파두부', '꿔바로우', '마라탕', '양꼬치'],
-    japanese: ['초밥', '라멘', '돈카츠', '규동', '우동', '소바', '텐동'],
-    western: ['파스타', '피자', '스테이크', '햄버거', '리조또', '감바스', '샐러드'],
-    others: ['치킨', '족발', '보쌈', '떡볶이', '곱창', '닭발', '쌀국수', '타코']
+    ko: {
+        korean: ['김치찌개', '된장찌개', '불고기', '비빔밥', '제육볶음', '갈비탕', '냉면', '삼겹살'],
+        chinese: ['짜장면', '짬뽕', '탕수육', '마파두부', '꿔바로우', '마라탕', '양꼬치'],
+        japanese: ['초밥', '라멘', '돈카츠', '규동', '우동', '소바', '텐동'],
+        western: ['파스타', '피자', '스테이크', '햄버거', '리조또', '감바스', '샐러드'],
+        others: ['치킨', '족발', '보쌈', '떡볶이', '곱창', '닭발', '쌀국수', '타코']
+    },
+    en: {
+        korean: ['Kimchi Stew', 'Doenjang Stew', 'Bulgogi', 'Bibimbap', 'Jeyuk Bokkeum', 'Galbitang', 'Naengmyeon', 'Samgyeopsal'],
+        chinese: ['Jajangmyeon', 'Jjamppong', 'Sweet and Sour Pork', 'Mapo Tofu', 'Guobaorou', 'Malatang', 'Lamb Skewers'],
+        japanese: ['Sushi', 'Ramen', 'Tonkatsu', 'Gyudon', 'Udon', 'Soba', 'Tendong'],
+        western: ['Pasta', 'Pizza', 'Steak', 'Hamburger', 'Risotto', 'Gambas', 'Salad'],
+        others: ['Fried Chicken', 'Jokbal', 'Bossam', 'Tteokbokki', 'Gopchang', 'Chicken Feet', 'Pho', 'Tacos']
+    }
 };
 
 recommendBtn.addEventListener('click', () => {
@@ -36,21 +52,27 @@ recommendBtn.addEventListener('click', () => {
         .filter(checkbox => checkbox.checked)
         .map(checkbox => checkbox.value);
 
+    const lang = isEnglish ? 'en' : 'ko';
+
     if (selectedCategories.length === 0) {
-        menuDisplay.textContent = '카테고리를 최소 하나 선택해주세요!';
+        menuDisplay.textContent = isEnglish ? 'Please select at least one category!' : '카테고리를 최소 하나 선택해주세요!';
         return;
     }
 
-    const availableMenus = selectedCategories.flatMap(category => menuData[category]);
+    const availableMenus = selectedCategories.flatMap(category => menuData[lang][category]);
     
     // Add a little animation effect
-    menuDisplay.textContent = '고르는 중...';
+    menuDisplay.textContent = isEnglish ? 'Choosing...' : '고르는 중...';
     recommendBtn.disabled = true;
 
     setTimeout(() => {
         const randomIndex = Math.floor(Math.random() * availableMenus.length);
         const recommendedMenu = availableMenus[randomIndex];
-        menuDisplay.textContent = `오늘의 저녁은... ${recommendedMenu}!`;
+        if (isEnglish) {
+            menuDisplay.textContent = `Today's dinner is... ${recommendedMenu}!`;
+        } else {
+            menuDisplay.textContent = `오늘의 저녁은... ${recommendedMenu}!`;
+        }
         recommendBtn.disabled = false;
     }, 500);
 });

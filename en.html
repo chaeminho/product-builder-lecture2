@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>What's for Dinner? - Menu Recommender</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="top-nav">
+    <a href="index.html" class="lang-switch">🇰🇷 한국어</a>
+    <button id="theme-toggle" class="theme-toggle-btn">🌙 Dark Mode</button>
+</div>
+
+<div class="container">
+    <header>
+        <h1>🍽️ What to Eat Today?</h1>
+        <p>A menu recommendation system for the indecisive</p>
+    </header>
+
+    <div class="recommend-box">
+        <div id="menu-display" class="menu-display">
+            Get a recommendation!
+        </div>
+        <button id="recommend-btn" class="recommend-btn">Recommend Today's Menu</button>
+    </div>
+
+    <div class="category-filters">
+        <label><input type="checkbox" name="category" value="korean" checked> Korean</label>
+        <label><input type="checkbox" name="category" value="chinese" checked> Chinese</label>
+        <label><input type="checkbox" name="category" value="japanese" checked> Japanese</label>
+        <label><input type="checkbox" name="category" value="western" checked> Western</label>
+        <label><input type="checkbox" name="category" value="others" checked> Others</label>
+    </div>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
