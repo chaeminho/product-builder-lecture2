@@ -314,3 +314,17 @@ header p {
     font-size: 0.8rem;
     color: var(--label-color);
 }
+
+/* File Upload Styles */
+.file-upload-wrapper {
+    margin-bottom: 20px;
+}
+
+.file-input {
+    display: none;
+}
+
+.file-upload-wrapper .recommend-btn {
+    display: inline-block;
+    cursor: pointer;
+}

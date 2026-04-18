@@ -16,19 +16,25 @@
 <div class="container">
     <header>
         <h1>🐶 AI 동물상 테스트 🐱</h1>
-        <p>인공지능이 분석하는 나의 동물상 찾기</p>
+        <p>사진을 업로드하여 나의 동물상 찾기</p>
     </header>
 
     <div class="recommend-box">
-        <div id="webcam-container" class="webcam-display">
-            <div id="loading-text">시작 버튼을 눌러 카메라를 켜주세요!</div>
+        <div id="image-container" class="webcam-display">
+            <img id="face-image" src="" alt="업로드된 이미지" style="display: none; width: 100%; height: 100%; object-fit: cover;">
+            <div id="loading-text">분석할 사진을 업로드해주세요!</div>
         </div>
+        
+        <div class="file-upload-wrapper">
+            <input type="file" id="image-input" accept="image/*" class="file-input" onchange="handleImageUpload(event)">
+            <label for="image-input" class="recommend-btn">사진 업로드하기</label>
+        </div>
+
         <div id="label-container" class="result-label-container"></div>
-        <button type="button" id="start-btn" class="recommend-btn" onclick="init()">테스트 시작하기</button>
     </div>
 
     <div class="info-box">
-        <p>※ 얼굴 데이터는 서버에 저장되지 않으며, 브라우저에서 실시간으로 분석됩니다.</p>
+        <p>※ 업로드된 사진은 서버에 저장되지 않으며, 브라우저에서 즉시 분석됩니다.</p>
     </div>
 </div>
 
@@ -37,80 +43,81 @@
 <script type="text/javascript">
     const URL = "https://teachablemachine.withgoogle.com/models/Csu6wKHGU/";
 
-    let model, webcam, labelContainer, maxPredictions;
+    let model, labelContainer, maxPredictions;
 
-    async function init() {
-        const startBtn = document.getElementById("start-btn");
-        const loadingText = document.getElementById("loading-text");
-        
-        startBtn.disabled = true;
-        loadingText.innerHTML = "모델 로딩 중...";
-
+    // Load the model on page load
+    async function loadModel() {
         const modelURL = URL + "model.json";
         const metadataURL = URL + "metadata.json";
-
         model = await tmImage.load(modelURL, metadataURL);
         maxPredictions = model.getTotalClasses();
+    }
+    loadModel();
 
-        const flip = true;
-        webcam = new tmImage.Webcam(300, 300, flip);
-        await webcam.setup();
-        await webcam.play();
-        window.requestAnimationFrame(loop);
+    async function handleImageUpload(event) {
+        const input = event.target;
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            const loadingText = document.getElementById("loading-text");
+            const faceImage = document.getElementById("face-image");
+            
+            loadingText.innerHTML = "분석 중...";
+            
+            reader.onload = async function(e) {
+                faceImage.src = e.target.result;
+                faceImage.style.display = "block";
+                loadingText.style.display = "none";
+                
+                // Wait for image to load before predicting
+                faceImage.onload = async function() {
+                    await predict();
+                };
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
 
-        document.getElementById("webcam-container").innerHTML = "";
-        document.getElementById("webcam-container").appendChild(webcam.canvas);
+    async function predict() {
+        if (!model) await loadModel();
+        
+        const faceImage = document.getElementById("face-image");
+        const prediction = await model.predict(faceImage);
         
         labelContainer = document.getElementById("label-container");
         labelContainer.innerHTML = "";
+        
         for (let i = 0; i < maxPredictions; i++) {
+            const probability = (prediction[i].probability * 100).toFixed(0);
+            
             const barContainer = document.createElement("div");
             barContainer.className = "prediction-bar-container";
             
             const label = document.createElement("span");
             label.className = "prediction-label";
+            label.innerHTML = `${prediction[i].className}: ${probability}%`;
             
             const barWrapper = document.createElement("div");
             barWrapper.className = "bar-wrapper";
             
             const bar = document.createElement("div");
             bar.className = "bar";
+            bar.style.width = probability + "%";
+            
+            // Highlight the highest probability
+            if (probability > 50) {
+                bar.style.backgroundColor = "var(--accent-color)";
+            } else {
+                bar.style.backgroundColor = "#ccc";
+            }
             
             barWrapper.appendChild(bar);
             barContainer.appendChild(label);
             barContainer.appendChild(barWrapper);
             labelContainer.appendChild(barContainer);
         }
-        
-        startBtn.style.display = "none";
     }
 
-    async function loop() {
-        webcam.update();
-        await predict();
-        window.requestAnimationFrame(loop);
-    }
-
-    async function predict() {
-        const prediction = await model.predict(webcam.canvas);
-        for (let i = 0; i < maxPredictions; i++) {
-            const probability = (prediction[i].probability * 100).toFixed(0);
-            const labelElement = labelContainer.childNodes[i].querySelector(".prediction-label");
-            const barElement = labelContainer.childNodes[i].querySelector(".bar");
-            
-            labelElement.innerHTML = `${prediction[i].className}: ${probability}%`;
-            barElement.style.width = probability + "%";
-            
-            // Highlight the highest probability
-            if (probability > 50) {
-                barElement.style.backgroundColor = "var(--accent-color)";
-            } else {
-                barElement.style.backgroundColor = "#ccc";
-            }
-        }
-    }
-
-    // Theme toggle support for animal page
+    // Theme toggle support
     const themeToggle = document.getElementById('theme-toggle');
     const html = document.documentElement;
     const savedTheme = localStorage.getItem('theme') || 'light';
