@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사이트 소개 - 오늘 뭐 먹지?</title>
+    <link rel="stylesheet" href="style.css">
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5402805160992455"
+     crossorigin="anonymous"></script>
+    <meta name="google-adsense-account" content="ca-pub-5402805160992455">
+</head>
+<body>
+
+<div class="top-nav">
+    <a href="index.html" class="lang-switch">🏠 홈으로</a>
+    <button id="theme-toggle" class="theme-toggle-btn">🌙 다크 모드</button>
+</div>
+
+<div class="container about-page-content">
+    <header>
+        <h1>ℹ️ 사이트 소개</h1>
+        <p>결정의 즐거움을 더해주는 스마트 라이프 스타일 가이드</p>
+    </header>
+
+    <div class="content-section">
+        <h3>1. 우리의 목적</h3>
+        <p>"오늘 점심 뭐 먹지?", "내가 어떤 동물을 닮았을까?"와 같은 일상의 소소하지만 어려운 고민들을 해결하기 위해 탄생했습니다. 우리는 사용자들이 쉽고 재미있게 결정을 내릴 수 있도록 돕는 디지털 도구를 제공합니다.</p>
+
+        <h3>2. 제공 서비스</h3>
+        <p><strong>메뉴 추천 시스템:</strong> 한식, 중식, 일식 등 다양한 카테고리를 기반으로 랜덤하게 메뉴를 제안하여 메뉴 선택의 스트레스를 줄여줍니다. 각 메뉴에 어울리는 고품질 이미지를 함께 제공하여 식욕을 돋웁니다.</p>
+        <p><strong>AI 동물상 테스트:</strong> 구글의 Teachable Machine 인공지능 기술을 활용하여 사용자의 사진을 분석하고, 강아지상인지 고양이상인지 재미있게 판별해줍니다. 최신 머신러닝 모델을 사용하여 높은 정확도와 재미를 동시에 선사합니다.</p>
+
+        <h3>3. 사용자 가치</h3>
+        <p>우리는 단순한 웹사이트를 넘어, 사용자에게 즐거운 경험과 유용한 정보를 전달하고자 합니다. 모든 서비스는 무료로 제공되며, 사용자의 프라이버시를 존중하는 안전한 환경을 지향합니다.</p>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-links">
+        <a href="about.html">사이트 소개</a>
+        <a href="privacy.html">개인정보처리방침</a>
+        <a href="index.html">홈</a>
+    </div>
+    <p>&copy; 2026 오늘 뭐 먹지? All Rights Reserved.</p>
+</footer>
+
+<script>
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', savedTheme);
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        themeToggle.textContent = newTheme === 'light' ? '🌙 다크 모드' : '☀️ 라이트 모드';
+    });
+    themeToggle.textContent = savedTheme === 'light' ? '🌙 다크 모드' : '☀️ 라이트 모드';
+</script>
+</body>
+</html>
