@@ -241,3 +241,15 @@ header p {
     filter: brightness(1.1);
     transform: translateY(-2px);
 }
+
+/* Comments Section Styles */
+.comments-section {
+    margin-top: 40px;
+    text-align: left;
+}
+
+.comments-section h2 {
+    text-align: center;
+    color: var(--text-color);
+    margin-bottom: 30px;
+}
