@@ -253,3 +253,64 @@ header p {
     color: var(--text-color);
     margin-bottom: 30px;
 }
+
+/* Animal Test Styles */
+.webcam-display {
+    width: 100%;
+    max-width: 300px;
+    height: 300px;
+    margin: 0 auto 20px;
+    background: #eee;
+    border-radius: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+}
+
+.webcam-display canvas {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover;
+}
+
+.result-label-container {
+    margin-bottom: 20px;
+    text-align: left;
+    width: 100%;
+    max-width: 300px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.prediction-bar-container {
+    margin-bottom: 15px;
+}
+
+.prediction-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.bar-wrapper {
+    background: var(--border-color);
+    border-radius: 10px;
+    height: 12px;
+    overflow: hidden;
+}
+
+.bar {
+    height: 100%;
+    width: 0;
+    background: var(--accent-color);
+    transition: width 0.3s ease;
+}
+
+.info-box {
+    margin-top: 20px;
+    font-size: 0.8rem;
+    color: var(--label-color);
+}

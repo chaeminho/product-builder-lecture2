@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI 동물상 테스트 - 나는 어떤 동물일까?</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="top-nav">
+    <a href="index.html" class="lang-switch">🏠 홈으로</a>
+    <button id="theme-toggle" class="theme-toggle-btn">🌙 다크 모드</button>
+</div>
+
+<div class="container">
+    <header>
+        <h1>🐶 AI 동물상 테스트 🐱</h1>
+        <p>인공지능이 분석하는 나의 동물상 찾기</p>
+    </header>
+
+    <div class="recommend-box">
+        <div id="webcam-container" class="webcam-display">
+            <div id="loading-text">시작 버튼을 눌러 카메라를 켜주세요!</div>
+        </div>
+        <div id="label-container" class="result-label-container"></div>
+        <button type="button" id="start-btn" class="recommend-btn" onclick="init()">테스트 시작하기</button>
+    </div>
+
+    <div class="info-box">
+        <p>※ 얼굴 데이터는 서버에 저장되지 않으며, 브라우저에서 실시간으로 분석됩니다.</p>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+<script type="text/javascript">
+    const URL = "https://teachablemachine.withgoogle.com/models/Csu6wKHGU/";
+
+    let model, webcam, labelContainer, maxPredictions;
+
+    async function init() {
+        const startBtn = document.getElementById("start-btn");
+        const loadingText = document.getElementById("loading-text");
+        
+        startBtn.disabled = true;
+        loadingText.innerHTML = "모델 로딩 중...";
+
+        const modelURL = URL + "model.json";
+        const metadataURL = URL + "metadata.json";
+
+        model = await tmImage.load(modelURL, metadataURL);
+        maxPredictions = model.getTotalClasses();
+
+        const flip = true;
+        webcam = new tmImage.Webcam(300, 300, flip);
+        await webcam.setup();
+        await webcam.play();
+        window.requestAnimationFrame(loop);
+
+        document.getElementById("webcam-container").innerHTML = "";
+        document.getElementById("webcam-container").appendChild(webcam.canvas);
+        
+        labelContainer = document.getElementById("label-container");
+        labelContainer.innerHTML = "";
+        for (let i = 0; i < maxPredictions; i++) {
+            const barContainer = document.createElement("div");
+            barContainer.className = "prediction-bar-container";
+            
+            const label = document.createElement("span");
+            label.className = "prediction-label";
+            
+            const barWrapper = document.createElement("div");
+            barWrapper.className = "bar-wrapper";
+            
+            const bar = document.createElement("div");
+            bar.className = "bar";
+            
+            barWrapper.appendChild(bar);
+            barContainer.appendChild(label);
+            barContainer.appendChild(barWrapper);
+            labelContainer.appendChild(barContainer);
+        }
+        
+        startBtn.style.display = "none";
+    }
+
+    async function loop() {
+        webcam.update();
+        await predict();
+        window.requestAnimationFrame(loop);
+    }
+
+    async function predict() {
+        const prediction = await model.predict(webcam.canvas);
+        for (let i = 0; i < maxPredictions; i++) {
+            const probability = (prediction[i].probability * 100).toFixed(0);
+            const labelElement = labelContainer.childNodes[i].querySelector(".prediction-label");
+            const barElement = labelContainer.childNodes[i].querySelector(".bar");
+            
+            labelElement.innerHTML = `${prediction[i].className}: ${probability}%`;
+            barElement.style.width = probability + "%";
+            
+            // Highlight the highest probability
+            if (probability > 50) {
+                barElement.style.backgroundColor = "var(--accent-color)";
+            } else {
+                barElement.style.backgroundColor = "#ccc";
+            }
+        }
+    }
+
+    // Theme toggle support for animal page
+    const themeToggle = document.getElementById('theme-toggle');
+    const html = document.documentElement;
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    html.setAttribute('data-theme', savedTheme);
+    
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = html.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        html.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        themeToggle.textContent = newTheme === 'light' ? '🌙 다크 모드' : '☀️ 라이트 모드';
+    });
+    themeToggle.textContent = savedTheme === 'light' ? '🌙 다크 모드' : '☀️ 라이트 모드';
+</script>
+</body>
+</html>
