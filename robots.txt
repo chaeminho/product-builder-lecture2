@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://chaeminho.github.io/product-builder-lecture2/sitemap.xml
